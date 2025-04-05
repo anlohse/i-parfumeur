@@ -1,0 +1,19 @@
+{
+  "name": "i-parfumeur",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "parcel ./index.html",
+    "build": "parcel build ./index.html"
+  },
+  "author": "",
+  "license": "MIT",
+  "description": "",
+  "devDependencies": {
+    "@types/cordova": "^11.0.3",
+    "parcel": "^2.14.4",
+    "typescript": "^5.8.3"
+  },
+  "dependencies": {
+    "lit-html": "^3.2.1"
+  }
+}
