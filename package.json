@@ -1,5 +1,5 @@
 {
-  "name": "com.anlohse.iparfumeur",
+  "name": "com.2025 Anlohse Software.iparfumeur",
   "displayName": "i-parfumeur",
   "version": "1.0.0",
   "description": "An intelligent and efficient app for perfumers to manage their fragrance recipes.",
@@ -10,7 +10,7 @@
   "keywords": [
     "ecosystem:cordova"
   ],
-  "author": "Anlohse Team",
+  "author": "2025 Anlohse Software Team",
   "license": "Apache-2.0",
   "cordova": {
     "platforms": []

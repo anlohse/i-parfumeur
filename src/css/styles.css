@@ -35,7 +35,8 @@ body {
     width: 100%;
     min-height: 100vh;
     background-color: #E4E4E4;
-    background-image: linear-gradient(to bottom, #A7A7A7 0%, #E4E4E4 51%);
+    background-image: url(../img/background.png);
+    background-repeat: repeat;
     font-family: system-ui, -apple-system, 'Segoe UI', 'Roboto', sans-serif;
     display: flex;
     align-items: center;
@@ -44,13 +45,12 @@ body {
 }
 
 /* Main app container */
-.app {
-    background: url(../img/logo.png) no-repeat top center;
-    background-size: 120px auto;
-    padding-top: 140px;
-    width: 90%;
-    max-width: 400px;
-    margin: 0 auto;
+#logo {
+    position: fixed;
+    width: 80%;
+    margin: 10%;
+    z-index: -1;
+    opacity: 0.75;
 }
 
 /* Headline */
@@ -193,4 +193,49 @@ h1 {
     height: 100vh !important;
     margin: 0 !important;
     border-radius: 0 !important;
+}
+
+.expander.expended.hide {
+    opacity: 0 !important;
+}
+
+.message-text.hide {
+    opacity: 0 !important;
+}
+
+.message-text.show {
+    opacity: 1 !important;
+}
+
+.message-text {
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    margin: 1rem 0;
+    background-color: #f2f2f2;
+    border-left: 4px solid #ccc;
+    color: #333;
+    transition: all 0.5s ease;
+    opacity: 0 !important;
+}
+.message-text.success {
+    background-color: #e6f7e6;
+    border-left-color: #28a745;
+    color: #1b5e20;
+}
+.message-text.error {
+    background-color: #fdecea;
+    border-left-color: #d32f2f;
+    color: #b71c1c;
+}
+.message-text.warning {
+    background-color: #fff8e1;
+    border-left-color: #ff9800;
+    color: #e65100;
+}
+.message-text.info {
+    background-color: #e3f2fd;
+    border-left-color: #2196f3;
+    color: #0d47a1;
 }

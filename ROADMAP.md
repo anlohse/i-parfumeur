@@ -77,7 +77,7 @@ This roadmap outlines the planned features for the i-parfumeur app, designed for
 
 ---
 
-### 🌈 **Visual Fragrance Projection (Experimental Feature)**  
+### 🌈 Phase 4 - **Visual Fragrance Projection (Experimental Feature)**  
 > Goal: Provide a unique and intuitive way to visualize how a perfume evolves over time using colors and evaporation rates.
 
 - [ ] Assign a unique color to each essential oil or raw material  
