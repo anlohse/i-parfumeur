@@ -31,6 +31,7 @@ import { Messages, sleep } from './util';
 export const FormulasView = () => html`
     <h2>📋 - My Formulas</h2>
     <div class="messages-container"></div>
+    
     <!-- TODO insert the frontend code here -->
 `;
 

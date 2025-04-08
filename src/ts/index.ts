@@ -23,6 +23,7 @@
  * SOFTWARE.
  */
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 import { html, render, TemplateResult } from 'lit-html';
 import {Home} from './home'
 import {FormulasView} from './formulas'
