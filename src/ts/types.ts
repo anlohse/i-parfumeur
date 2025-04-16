@@ -55,38 +55,38 @@ export type OlfactoryFamily =
 | 'animalic';
 
 export interface Material {
-  id: string;
-  name: string;
-  color: string;
-  notes: ('top' | 'heart' | 'base')[];
-  dropsPerMl: number;
-  family: OlfactoryFamily;
-  createdAt: string;
-  updatedAt?: string;
+    id: string;
+    name: string;
+    color: string;
+    notes: ('top' | 'heart' | 'base')[];
+    dropsPerMl: number;
+    family: OlfactoryFamily;
+    createdAt: string;
+    updatedAt?: string;
 }
 
 export interface InventoryBottle {
     id: string;
     amount: number;
-    unit: 'ml' | 'g' | 'oz';
+    unit: 'drops' | 'ml' | 'g' | 'oz';
     inUse: boolean;
     openedAt?: string;
-  }
+}
   
-  export interface InventoryItem {
+export interface InventoryItem {
     materialId: string;
     bottles: InventoryBottle[];
-  }
+}
   
 
 export interface Ingredient {
-  name: string;
-  note: 'top' | 'heart' | 'base';
-  inputValue: number;
-  inputUnit: InputMode;
-  drops?: number;
-  ml?: number;
-  percent?: number;
+    name: string;
+    note: 'top' | 'heart' | 'base';
+    inputValue: number;
+    inputUnit: InputMode;
+    drops?: number;
+    ml?: number;
+    percent?: number;
 }
 
 export interface Formula {
@@ -97,4 +97,12 @@ export interface Formula {
     ingredients: Ingredient[];
     createdAt: string;
     updatedAt?: string;
+}
+
+export interface Configuration {
+    preferredInputUnit: InputMode;
+    preferredStockUnit: InputMode;
+    lowStockWarning: boolean;
+    lowStockThreshold: number;
+    language: string
 }

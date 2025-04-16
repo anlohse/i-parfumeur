@@ -24,10 +24,14 @@
  */
 
 import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap-icons/font/bootstrap-icons.css";
+import 'bootstrap';
 import { html, render, TemplateResult } from 'lit-html';
-import {Home} from './home'
-import {FormulasView} from './formulas'
-import {InventoryView} from './inventory'
+import {Home} from './home';
+import {FormulasView} from './formulas';
+import {InventoryView} from './inventory';
+import {MaterialsView} from './materials';
+import {SettingsView} from './settings';
 
 declare const cordova: any; 
 
@@ -55,6 +59,8 @@ function renderRoute() {
   const routes: Record<string, () => TemplateResult<1>> = {
     'formulas': FormulasView,
     'inventory': InventoryView,
+    'materials': MaterialsView,
+    'settings': SettingsView,
     '': Home
   };
 
