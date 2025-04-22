@@ -23,34 +23,27 @@
  * SOFTWARE.
  */
 import { html } from 'lit-html';
-import 'bootstrap';
+import {Collapse} from './components/collapse';
 
 export const InventoryView = () => html`
     <h2>🧴 - Inventory</h2>
-    <div class="card mb-3">
-        <div class="card-header d-flex justify-content-between align-items-center">
-            <span><strong>Materiais</strong></span>
-            <div>
-                <button class="btn btn-sm btn-icon" title="Adicionar">
-                    <i class="bi bi-plus icon"></i>
-                </button>
-                <button class="btn btn-sm btn-icon rotate-toggle" 
-                        data-bs-toggle="collapse" 
-                        data-bs-target="#materialsCollapse"
-                        aria-expanded="false" 
-                        aria-controls="materialsCollapse"
-                        title="Expandir/Recolher">
-                    <i class="bi bi-caret-up icon"></i>
-                </button>
-            </div>
-        </div>
+    ${Collapse({
+        id: 'inventoryCollapse',
+        title: 'Inventory',
+        body: html`
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, 
+                sed do eiusmod tempor incididunt ut labore et dolore magna 
+                aliqua. Ut enim ad minim veniam, quis nostrud exercitation 
+                ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
+        `,
+        showAddButton: true,
+        showExpandButton: true,
+        expanded: true,
+        onadd: (e: Event) => {
+            console.log('add', e);
+        }
+    })} 
 
-        <div class="collapse" id="materialsCollapse">
-            <div class="card-body">
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </p>
-            </div>
-        </div>
-    </div>
 
 `;
 
