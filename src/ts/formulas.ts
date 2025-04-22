@@ -31,12 +31,180 @@ import { Messages, sleep } from './util';
 export const FormulasView = () => html`
     <h2>📋 - My Formulas</h2>
     <div class="messages-container"></div>
-    
-    <!-- TODO insert the frontend code here -->
+    <div class="container">
+  <div class="row">
+
+    <!-- TODO insert the frontend code her -->
+    ${FormulasEditView()}
+
+</div>
+</div>
 `;
 
+const FormulasSearchView = () => html`
+    <div class="accordion col" id="accordionExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                Filters
+            </button>
+            </h2>
+            <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <label for="floatingInput">Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <label for="floatingInput">ingredients</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <label for="floatingInput">Style</label>
+                </div>
+            </div>
+        </div>
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
+                    Results
+                </button>
+            </h2>
+            <div id="collapseTwo" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                            <th scope="col">Formula</th>
+                            <th scope="col">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+`;
+
+const FormulasEditView = () => html`
+
+            <div class="col">
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <label for="floatingInput">Identifier</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <label for="floatingInput">Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <label for="floatingInput">Description</label>
+                </div>
+                <div class="form-floating mb-3">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="name@example.com">
+                    <label for="floatingInput">Style</label>
+                </div>
+            </div>
+    <div class="accordion" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTop" aria-expanded="true" aria-controls="collapseTop">
+                    Top -30%
+                </button>
+                <button class="btn" style="position: absolute">✚</button>
+
+            </h2>
+
+            <div id="collapseTop" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsethree" aria-expanded="true" aria-controls="collapseTwo">
+                    Heart 48%
+                </button>
+            </h2>
+            <div id="collapsethree" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        
+        <div class="accordion-item">
+            <h2 class="accordion-header">
+                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapsefour" aria-expanded="true" aria-controls="collapseTwo">
+                    Base -22%
+                </button>
+            </h2>
+            <div id="collapsefour" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                <div class="accordion-body">
+                    <table class="table">
+                        <tbody>
+                            <tr>
+                            <td>-</td>
+                            <td>-</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="collapse-container mb-2">
+        <div class="d-flex justify-content-between align-items-center bg-primary p-3">
+            <span class="fs-5 fw-bold">Título do Collapse</span>
+            <div>
+                <button class="btn btn-icon btn-sm">
+                    <i class="bi bi-plus"></i>
+                </button>
+                <button class="btn btn-icon btn-sm rotate-icon" style="font-size: 1.5em" data-bs-toggle="collapse" data-bs-target="#collapseContent">
+                    <i class="bi bi-chevron-down" id="collapseIcon"></i>
+                </button>
+            </div>
+        </div>
+        <div class="collapse" id="collapseContent">
+            <div class="card card-body">
+            Este é o conteúdo do collapse. Aqui você pode adicionar qualquer coisa.
+            </div>
+        </div>
+    </div>
+
+
+
+`;
+
+
 (async function () {
-    window.addEventListener('page-formulas', async() => {
+    window.addEventListener('page-formulas', async () => {
         await sleep(600);
         Messages.add('Welcome to the formulas page', 'success');
     })

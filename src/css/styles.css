@@ -16,7 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-* {
+
+ * {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     box-sizing: border-box;
 }
@@ -42,6 +43,10 @@ body {
     align-items: center;
     justify-content: center;
     text-align: center;
+}
+
+#app {
+    width: 100%;
 }
 
 /* Main app container */
@@ -115,22 +120,6 @@ h1 {
         padding-top: 0;
         padding-left: 120px;
         text-align: left;
-    }
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-    body {
-        background-image: linear-gradient(to bottom, #585858 0%, #1B1B1B 51%);
-        color: #eaeaea;
-    }
-
-    .event.listening {
-        background-color: #666;
-    }
-
-    .event.received {
-        background-color: #2e7d5b;
     }
 }
 
@@ -239,3 +228,14 @@ h1 {
     border-left-color: #2196f3;
     color: #0d47a1;
 }
+
+/* Animação suave na rotação */
+.rotate-icon {
+    transition: transform 0.3s ease;
+  }
+  
+  /* Quando o collapse estiver aberto (aria-expanded="true") */
+  button[aria-expanded="true"].rotate-icon {
+    transform: rotate(180deg) !important;
+  }
+  
