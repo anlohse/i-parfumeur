@@ -1,36 +1,42 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
+/**
+ * i-parfumeur - Artisan Perfume Formula Manager
+ * 
+ * @license MIT
+ * Copyright (c) 2025 2025 Anlohse Software
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
  */
 
+<<<<<<< HEAD
  * {
+=======
+* {
+>>>>>>> a865af5d95a72d5b1be91c103e6423ebeac3bdbd
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     box-sizing: border-box;
 }
 
 html {
     font-size: 3.5vw;
-    /* Escala com a largura da tela */
 }
 
 body {
-    -webkit-touch-callout: none;
-    -webkit-text-size-adjust: none;
-    -webkit-user-select: none;
     margin: 0;
     padding: env(safe-area-inset-top, 0px) env(safe-area-inset-right, 0px) env(safe-area-inset-bottom, 0px) env(safe-area-inset-left, 0px);
     width: 100%;
@@ -45,11 +51,14 @@ body {
     text-align: center;
 }
 
+<<<<<<< HEAD
 #app {
     width: 100%;
 }
 
 /* Main app container */
+=======
+>>>>>>> a865af5d95a72d5b1be91c103e6423ebeac3bdbd
 #logo {
     position: fixed;
     width: 80%;
@@ -58,6 +67,7 @@ body {
     opacity: 0.75;
 }
 
+<<<<<<< HEAD
 /* Headline */
 h1 {
     font-size: 2rem;
@@ -123,6 +133,8 @@ h1 {
     }
 }
 
+=======
+>>>>>>> a865af5d95a72d5b1be91c103e6423ebeac3bdbd
 .grid {
     display: flex;
     flex-wrap: wrap;
@@ -229,13 +241,30 @@ h1 {
     color: #0d47a1;
 }
 
-/* Animação suave na rotação */
-.rotate-icon {
-    transition: transform 0.3s ease;
-  }
+.btn-icon {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: inherit;
+}
   
-  /* Quando o collapse estiver aberto (aria-expanded="true") */
-  button[aria-expanded="true"].rotate-icon {
-    transform: rotate(180deg) !important;
-  }
+.btn-icon:hover {
+    color: #0d6efd;
+}
+
+.icon {
+    display: inline-block;
+    margin-top: -0.2em !important;
+    margin-bottom: -0.2em !important;
+}
+
+.rotate-toggle .icon {
+    transition: transform 0.3s ease;
+}
+  
+.rotate-toggle[aria-expanded="true"] .icon {
+    transform: rotate(180deg);
+}
   

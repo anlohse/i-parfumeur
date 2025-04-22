@@ -3,7 +3,7 @@ import { Material } from './types';
 export const DEFAULT_MATERIALS: Material[] = [
   {
     id: 'lavender',
-    name: 'Lavender Essential Oil',
+    name: 'Lavender',
     notes: ['top', 'heart'],
     dropsPerMl: 20,
     color: '#b39ddb',

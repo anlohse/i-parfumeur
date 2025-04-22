@@ -22,7 +22,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import { MessageSeverity } from "types";
+import { Configuration, MessageSeverity } from "types";
 
 export function sleep(ms: number): Promise<void> {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -44,3 +44,25 @@ export const Messages = {
         message.remove();
     }
 }
+
+const defaultConfig = `{
+    "preferredInputUnit": "drops",
+    "preferredStockUnit": "ml",
+    "lowStockWarning": true,
+    "lowStockThreshold": 10,
+    "language": "en"
+}`;
+
+const _config: Configuration = JSON.parse(localStorage.getItem('_config') || defaultConfig);
+
+export const config = new Proxy(_config, {
+        get(target, prop, receiver) {
+            return Reflect.get(target, prop, receiver);
+        },
+        set(target, prop, value, receiver) {
+            let r = Reflect.set(target, prop, value, receiver);
+            localStorage.setItem('_config', JSON.stringify(_config));
+            return r;
+        }
+    });
+
