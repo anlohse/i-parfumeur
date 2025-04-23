@@ -66,3 +66,9 @@ export const config = new Proxy(_config, {
         }
     });
 
+
+export function assert<T>(obj: T, prop: keyof T, messageFormat: string): void {
+    if (obj[prop] === null || obj[prop] === undefined) {
+        throw new Error(messageFormat.replace('{field}', String(prop)));
+    }
+}

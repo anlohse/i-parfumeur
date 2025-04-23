@@ -26,3 +26,4 @@ node_modules/
 /platforms/
 /src/dist
 /src/.parcel-cache
+package-lock.json

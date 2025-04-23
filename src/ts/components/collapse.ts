@@ -1,6 +1,7 @@
 import { html, TemplateResult } from 'lit-html';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import "bootstrap-icons/font/bootstrap-icons.css";
+import { assert } from '../util';
 
 export interface CollapseData {
     id: string;
@@ -21,13 +22,17 @@ export function Collapse(data: CollapseData) {
         }
     };
     data = {...defaultValues, ...data};
+    
+    assert(data,'id', 'Collapse component requires a unique "{field}" property.');
+    assert(data,'title', 'Collapse component requires a "{field}" property.');
+    assert(data,'body', 'Collapse component requires a "{field}" property.');
     return html`
         <div class="card mb-3">
             <div class="card-header d-flex justify-content-between align-items-center">
                 <span><strong>${data.title}</strong></span>
                 <div>
                     ${data.showAddButton ? html`
-                        <button class="btn btn-sm btn-icon" title="Adicionar" @click="${data.onadd}">
+                        <button class="btn btn-sm btn-icon" title="Add" @click="${data.onadd}">
                             <i class="bi bi-plus icon"></i>
                         </button>
                     ` : ''}
@@ -36,7 +41,7 @@ export function Collapse(data: CollapseData) {
                                 data-bs-target="#${data.id}"
                                 aria-expanded="${data.expanded ? 'true' : 'false'}"
                                 aria-controls="${data.id}"
-                                title="Expandir/Recolher">
+                                title="Expand/Collapse">
                             <i class="bi bi-caret-up icon"></i>
                         </button>
                     ` : ''}
@@ -49,5 +54,7 @@ export function Collapse(data: CollapseData) {
                 </div>
             </div>
         </div>
+
+        
     `;
 }
