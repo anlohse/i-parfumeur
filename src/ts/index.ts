@@ -32,6 +32,7 @@ import {FormulasView} from './formulas';
 import {InventoryView} from './inventory';
 import {MaterialsView} from './materials';
 import {SettingsView} from './settings';
+import {listenUpdate} from './util';
 
 declare const cordova: any; 
 
@@ -80,7 +81,11 @@ function onDeviceReady() {
 
   renderRoute();
 
+  listenUpdate((e: Event) => {
+    console.log('update', e);
+    renderRoute();
+  });
+
   window.addEventListener('hashchange', renderRoute);
   window.addEventListener('load', renderRoute);
-
 }

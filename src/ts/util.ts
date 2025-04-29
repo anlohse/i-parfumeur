@@ -66,3 +66,35 @@ export const config = new Proxy(_config, {
         }
     });
 
+
+export function assert<T>(obj: T, prop: keyof T, messageFormat: string): void {
+    if (obj[prop] === null || obj[prop] === undefined) {
+        throw new Error(messageFormat.replace('{field}', String(prop)));
+    }
+}
+
+export function listenEvents(listener: (e: Event) => void, events: string[]) {
+    events.forEach(event => {
+        window.addEventListener(event, listener);
+    });
+}
+
+export function unlistenEvents(listener: (e: Event) => void, events: string[]) {
+    events.forEach(event => {
+        window.removeEventListener(event, listener);
+    });
+}
+
+export function listenUpdate(listener: (e: Event) => void) {
+    window.addEventListener('update', listener);
+}
+
+export function dispatchEvent(eventName: string, detail?: any) {
+    const event = new CustomEvent(eventName, { detail });
+    window.dispatchEvent(event);
+}
+
+export function update() {
+    const updateEvent = new Event('update');
+    window.dispatchEvent(updateEvent);
+}
