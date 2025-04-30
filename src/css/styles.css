@@ -23,11 +23,7 @@
  * SOFTWARE.
  */
 
-<<<<<<< HEAD
- * {
-=======
 * {
->>>>>>> a865af5d95a72d5b1be91c103e6423ebeac3bdbd
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     box-sizing: border-box;
 }
@@ -51,14 +47,6 @@ body {
     text-align: center;
 }
 
-<<<<<<< HEAD
-#app {
-    width: 100%;
-}
-
-/* Main app container */
-=======
->>>>>>> a865af5d95a72d5b1be91c103e6423ebeac3bdbd
 #logo {
     position: fixed;
     width: 80%;
@@ -67,74 +55,6 @@ body {
     opacity: 0.75;
 }
 
-<<<<<<< HEAD
-/* Headline */
-h1 {
-    font-size: 2rem;
-    margin: 0.5rem 0;
-    font-weight: 500;
-    color: #222;
-}
-
-/* Events and messages */
-.event {
-    border-radius: 6px;
-    color: #fff;
-    font-size: 1rem;
-    margin: 1rem 1.5rem;
-    padding: 0.5rem;
-    display: none;
-}
-
-.event.listening {
-    background-color: #333;
-    display: block;
-}
-
-.event.received {
-    background-color: #4B946A;
-}
-
-#deviceready.ready .event.listening {
-    display: none;
-}
-
-#deviceready.ready .event.received {
-    display: block;
-}
-
-/* Blink animation */
-@keyframes fade {
-    0% {
-        opacity: 1;
-    }
-
-    50% {
-        opacity: 0.4;
-    }
-
-    100% {
-        opacity: 1;
-    }
-}
-
-.blink {
-    animation: fade 3s infinite;
-}
-
-/* Landscape adjustment */
-@media screen and (orientation: landscape) {
-    .app {
-        background-position: left center;
-        background-size: 100px auto;
-        padding-top: 0;
-        padding-left: 120px;
-        text-align: left;
-    }
-}
-
-=======
->>>>>>> a865af5d95a72d5b1be91c103e6423ebeac3bdbd
 .grid {
     display: flex;
     flex-wrap: wrap;
@@ -166,6 +86,11 @@ h1 {
 .icon {
     font-size: 2rem;
     margin-bottom: 0.5rem;
+}
+
+.icon-sm {
+    font-size: 1.5rem;
+    margin-bottom: 0.4rem;
 }
 
 .label {
@@ -267,4 +192,4 @@ h1 {
 .rotate-toggle[aria-expanded="true"] .icon {
     transform: rotate(180deg);
 }
-  
+
