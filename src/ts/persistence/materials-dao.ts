@@ -22,13 +22,13 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-import {Formula} from '../types';
+import {Material} from '../types';
 import {IndexedDbDao} from '../system/dao-indexeddb';
 
-const FORMULA_STORE_NAME = 'formulas';
+const MATERIAL_STORE_NAME = 'materials';
 
-export class FormulaDao extends IndexedDbDao<Formula> {
+export class MaterialDao extends IndexedDbDao<Material> {
     constructor() {
-        super(FORMULA_STORE_NAME);
+        super(MATERIAL_STORE_NAME);
     }
 }

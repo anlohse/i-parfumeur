@@ -24,6 +24,7 @@
  */
 import { openDB, IDBPDatabase, IDBPTransaction, StoreNames, DBSchema } from 'idb';
 import { Dao } from './dao';
+import { databaseVersions } from './database-versions';
 
 export const DB_NAME = 'iparfumeur-idb';
 export const DB_VERSION = 1;
@@ -35,9 +36,17 @@ export class IndexedDbDao<T extends { id?: string }> implements Dao<T> {
     constructor(private storeName: string) { }
 
     upgrade(database: IDBPDatabase, oldVersion: number, newVersion: number | null, transaction: IDBTransaction): void {
-        if (!database.objectStoreNames.contains(this.storeName)) {
-            database.createObjectStore(this.storeName, { keyPath: 'id' });
-        }
+        databaseVersions.forEach((version) => {
+            if (version.version === newVersion) {
+                version.stores.forEach((store) => {
+                    const objectStore = database.createObjectStore(store.name, store.options);
+                    store.indexes?.forEach((index) => {
+                        objectStore.createIndex(index.name, index.keyPath, index.options);
+                    });
+                    store.data?.forEach((data) => objectStore.put(data));
+                });
+            }
+        });
     }
 
     private async getDb() {
@@ -56,9 +65,13 @@ export class IndexedDbDao<T extends { id?: string }> implements Dao<T> {
         return db.get(this.storeName, id);
     }
 
+    composeId(value: T, rawId: number): string {
+        return value.id || this.storeName + "-" + rawId;
+    }
+
     async save(entity: T): Promise<void> {
         if (!entity.id) {
-            entity.id = this.storeName + "-" + await sequenceGenerator.next(this.storeName);
+            entity.id = this.composeId(entity, await sequenceGenerator.next(this.storeName));
         }
         const db = await this.getDb();
         await db.put(this.storeName, entity);
@@ -71,12 +84,21 @@ export class IndexedDbDao<T extends { id?: string }> implements Dao<T> {
 
     async findByFilters(filters: Record<string, string>): Promise<T[]> {
         const all = await this.findAll();
-        return all.filter((item) =>
-            Object.entries(filters).every(
+        return all.filter((item) => {
+            let filterEntries = Object.entries(filters);
+            return filterEntries.length == 0 || filterEntries.every(
                 ([key, value]) => (item as any)[key] == value
             )
-        );
+        });
     }
+
+    async findByPartial(field: keyof T, query: string): Promise<T[]> {
+        const all = await this.findAll();
+        return all.filter((item) => {
+          const value = (item[field] as unknown as string)?.toLowerCase();
+          return value?.includes(query.toLowerCase());
+        });
+      }      
 
     async findByIndexes(indexValues: Record<string, string>): Promise<T[]> {
         const db = await this.getDb();

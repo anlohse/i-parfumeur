@@ -32,6 +32,8 @@ export interface MessagesType {
 
 export type InputMode = 'drops' | 'ml' | 'percent';
 
+export type NoteType = 'top' | 'heart' | 'base';
+
 export type OlfactoryFamily =
 | 'citrus'
 | 'floral'
@@ -54,11 +56,35 @@ export type OlfactoryFamily =
 | 'balsamic'
 | 'animalic';
 
+export const olfactoryFamilies : { value: OlfactoryFamily, label: string }[] = [
+    { value: 'citrus', label: 'Citrus' },
+    { value: 'floral', label: 'Floral' },
+    { value: 'woody', label: 'Woody' },
+    { value: 'oriental', label: 'Oriental' },
+    { value: 'aromatic', label: 'Aromatic' },
+    { value: 'spicy', label: 'Spicy' },
+    { value: 'fruity', label: 'Fruity' },
+    { value: 'green', label: 'Green' },
+    { value: 'chypre', label: 'Chypre' },
+    { value: 'leather', label: 'Leather' },
+    { value: 'gourmand', label: 'Gourmand' },
+    { value: 'aquatic', label: 'Aquatic' },
+    { value: 'aldehydic', label: 'Aldehydic' },
+    { value: 'amber', label: 'Amber' },
+    { value: 'musk', label: 'Musk' },
+    { value: 'fougere', label: 'Fougère' },
+    { value: 'ozonic', label: 'Ozonic' },
+    { value: 'herbal', label: 'Herbal' },
+    { value: 'balsamic', label: 'Balsamic' },
+    { value: 'animalic', label: 'Animalic' },
+];
+  
+
 export interface Material {
     id: string;
     name: string;
     color: string;
-    notes: ('top' | 'heart' | 'base')[];
+    notes: NoteType[];
     dropsPerMl: number;
     family: OlfactoryFamily;
     createdAt: string;
@@ -80,8 +106,8 @@ export interface InventoryItem {
   
 
 export interface Ingredient {
-    name: string;
-    note: 'top' | 'heart' | 'base';
+    material: Material;
+    note: NoteType;
     inputValue: number;
     inputUnit: InputMode;
     drops?: number;
@@ -93,7 +119,7 @@ export interface Formula {
     id: string | undefined;
     name: string;
     description?: string;
-    family: OlfactoryFamily;
+    families: OlfactoryFamily[];
     ingredients: Ingredient[];
     createdAt: string;
     updatedAt?: string;
