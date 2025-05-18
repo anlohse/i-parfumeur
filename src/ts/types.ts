@@ -32,6 +32,8 @@ export interface MessagesType {
 
 export type InputMode = 'drops' | 'ml' | 'percent';
 
+export type NoteClassification = 'top' | 'heart' | 'base';
+
 export type OlfactoryFamily =
 | 'citrus'
 | 'floral'
@@ -58,7 +60,7 @@ export interface Material {
     id: string;
     name: string;
     color: string;
-    notes: ('top' | 'heart' | 'base')[];
+    notes: NoteClassification[];
     dropsPerMl: number;
     family: OlfactoryFamily;
     createdAt: string;
@@ -81,7 +83,7 @@ export interface InventoryItem {
 
 export interface Ingredient {
     name: string;
-    note: 'top' | 'heart' | 'base';
+    note: NoteClassification;
     inputValue: number;
     inputUnit: InputMode;
     drops?: number;
