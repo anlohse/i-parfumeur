@@ -5,6 +5,7 @@ export interface MultiselectOptions {
     placeholder?: string;
     className?: string;
     style?: string;
+    values?: { name: string }[];
     fetchOptions: () => Promise<{ name: string }[]>;
     onSelect?: (item: any[]) => void;
 }
@@ -14,13 +15,15 @@ export function MultiSelect(multiselectOptions: MultiselectOptions) {
     setTimeout(async () => {
         state.options = await multiselectOptions.fetchOptions();
         console.log('state.options', state.options);
+        (document.getElementById(multiselectOptions.id) as HTMLInputElement).value = state.selectedItems.map(i => i.name).join(', ');
         update();
     }, 1);
 
     const state = {
         options: [] as { name: string }[],
-        selectedItems: [] as { name: string }[],
+        selectedItems: multiselectOptions.values || [] as { name: string }[],
         search: '',
+        values: multiselectOptions.values || [] as { name: string }[],
     };
 
     function selectItem(e: Event) {
@@ -50,13 +53,19 @@ export function MultiSelect(multiselectOptions: MultiselectOptions) {
         }, 100);
     }    
 
+    function hasValue(opt: { name: string }): boolean {
+        return state.values.some((item) => item.name === opt.name);
+    }
+
     function update() {
         const list = document.getElementById(multiselectOptions.id + '-list') as HTMLUListElement;
         if (state.options.length) 
             render(html`
                     ${state.options.map(opt => html`<li class="list-group-item">
                                                         <label class="dropdown-item">
-                                                            <input class="form-check-input" style="border: 1px solid #999" .data="${opt}" type="checkbox" 
+                                                            <input class="form-check-input" style="border: 1px solid #999" type="checkbox" 
+                                                                    .checked="${hasValue(opt)}" 
+                                                                    .data="${opt}"
                                                                     @blur="${hideDropdownIfNoFocus}"
                                                                     @focus="${showDropdown}"
                                                                     @change="${selectItem}"/> ${opt.name}

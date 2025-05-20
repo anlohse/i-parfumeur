@@ -23,12 +23,14 @@
  * SOFTWARE.
  */
 import { html, render } from 'lit-html';
+import { sleep } from '../util';
 
 export interface AutoSelectOptions {
     id: string;
     placeholder?: string;
     className?: string;
     style?: string;
+    value?: { name: string };
     fetchOptions: (term: string) => Promise<{ name: string }[]>;
     onSelect?: (item: any) => void;
 }
@@ -57,10 +59,10 @@ export function AutoSelect(autoselectOptions: AutoSelectOptions) {
         debounceLoad(value); // async update
     }
 
-    function selectItem(e: Event) {
+    function selectItem(e: Event, callEventHandler = true) {
         console.log('selectItem', e.target);
         const item = (e.target as any).data;
-        if (autoselectOptions.onSelect) {
+        if (autoselectOptions.onSelect && callEventHandler) {
             autoselectOptions.onSelect(item);
         }
         state.search = item.name;
@@ -87,6 +89,15 @@ export function AutoSelect(autoselectOptions: AutoSelectOptions) {
             render(html`<li class="list-group-item">No results</li>`, list);
     }
     
+    if (autoselectOptions.value) {
+        sleep(1).then(() => {
+            state.search = autoselectOptions.value?.name || '';
+            (document.getElementById(autoselectOptions.id) as HTMLInputElement).value = state.search;
+            (document.getElementById(autoselectOptions.id) as HTMLInputElement).toggleAttribute('readonly', true);
+            (document.getElementById(autoselectOptions.id + '-clear') as HTMLButtonElement).style.display = 'block';
+        });
+    }
+
     return html`
         <input id="${autoselectOptions.id}" 
                type="text" 

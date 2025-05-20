@@ -72,18 +72,12 @@ const FormulasSearchView = () => html`
                     <label for="floatingInput">Ingredients</label>
                 </div>
                 <div class="form-floating mb-3">
-                    ${MultiSelect({
-                        id: 'families',
-                        placeholder: 'Families',
-                        className: 'form-control',
-                        style: 'width: 100%',
-                        fetchOptions: async () => {
-                            return olfactoryFamilies.map((family) => {
-                                return { id: family.value, name: family.label };
-                            });
-                        },
-                        onSelect: changeFamilyFilter
-                    })}
+                    <select name="formulasByFamily" class="form-select" id="families" @change="${changeFilters}">
+                        <option value="">All</option>
+                        ${olfactoryFamilies.map((family) => html`
+                            <option value="${family.value}">${family.label}</option>
+                        `)}
+                    </select>
                     <label for="floatingInput">Family</label>
                 </div>
             </div>
@@ -145,6 +139,7 @@ function MaterialTable(data: Ingredient[], containerId: string) {
                                 id: containerId + '-' + i,
                                 placeholder: 'Material',
                                 className: 'form-control',
+                                value: material.material,
                                 fetchOptions: async (term: string) => {
                                     return (term || '').length > 0 ? await materialDao.findByPartial('name', term) : [] as Material[];
                                 },
@@ -212,7 +207,18 @@ const FormulasEditView = () => html`
                     <label for="formulaName">Description</label>
                 </div>
                 <div class="form-floating mb-3">
-                    <input name="families" type="text" class="form-control" id="formulaFamilies" placeholder="Families" @change="${changeFormula}" value="${formula.families.join(', ')}">
+                    ${MultiSelect({
+                        id: 'formulaFamilies',
+                        placeholder: 'Families',
+                        className: 'form-control',
+                        style: 'width: 100%',
+                        fetchOptions: async () => {
+                            return olfactoryFamilies.map((family) => {
+                                return { id: family.value, name: family.label };
+                            });
+                        },
+                        onSelect: changeFamilyEditing
+                    })}
                     <label for="formulaFamilies">Families</label>
                 </div>
             </div>
@@ -270,9 +276,9 @@ const FormulasEditView = () => html`
                 }
             })} 
 
-            <div class="col me-ms-2">
-                <button class="btn btn-secondary col-6" @click="${cancelEdit}">Cancel</button>
-                <button class="btn btn-primary col-6" @click="${saveFormula}">Save</button>        
+            <div class="d-flex justify-content-center gap-4 ps-3 pe-3">
+                <button type="button" class="btn btn-outline-light btn-secondary col-6" @click="${cancelEdit}">Cancel</button>
+                <button type="button" class="btn btn-outline-light btn-primary col-6" @click="${saveFormula}">Save</button>
             </div>
 
 
@@ -363,6 +369,11 @@ function changeFilters(e: Event) {
         ...lastFilters,
         [target.name]: target.value
     };
+    Object.keys(filters).forEach(key => {
+        if (filters[key] === undefined || filters[key] === '') {
+            delete filters[key];
+        }
+    });
     loadFormulas(filters);
 }
 
@@ -381,20 +392,11 @@ const changeMaterialFilter = (material: any) => {
     loadFormulas(filters);
 }
 
-const changeFamilyFilter = (families: any) => {
-    console.log('changeFamilyFilter', families);
-    const filters : any = {
-        ...lastFilters, 
-        formulasByFamily: families?.map((f: any) => f.id)
-    };
-    // clear undefined or blank filters
-    Object.keys(filters).forEach(key => {
-        if (filters[key] === undefined || filters[key] === '') {
-            delete filters[key];
-        }
-    });
-    loadFormulas(filters);
+const changeFamilyEditing = (families: any) => {
+    console.log('changeFamilyEditing', families);
+    formula.families = families?.map((f: any) => f.id);
 }
+
 
 function changeFormula(e: Event) {
     const target = e.target as HTMLInputElement;
@@ -414,6 +416,16 @@ async function loadFormula(id: string) {
     if (opFormula) {
         formula = opFormula;
         editing = true;
+        Object.keys(groupIngredients).forEach(group => {
+            groupIngredients[group as NoteType] = formula.ingredients.filter(ing => ing.note === group) as Ingredient[];
+            groupPercentages[group as NoteType] = 0;
+        });
+        let material = formula.ingredients[0];
+        if (material) {
+            sleep(100).then(() => {
+                updatePercentages(material, material?.inputUnit);
+            });
+        }
         update();
     } else {
         Messages.add('Formula not found', 'error');
@@ -433,6 +445,18 @@ function updateIngredient(material: Ingredient, key: keyof Ingredient, e: Event)
     const target = e.target as HTMLInputElement;
     let val = parseFloat(target.value);
     (material as any)[key] = Number.isNaN(val) ? 0 : val;
+    // TODO update other material keys
+    if (key === 'drops') {
+        material.ml = material.drops! / material.material.dropsPerMl;
+        material.percent = (material.drops! / formula.ingredients.reduce((acc, ing) => acc + (ing as any).drops, 0)) * 100;
+    } else if (key === 'ml') {
+        material.drops = material.ml! * material.material.dropsPerMl;
+        material.percent = (material.ml! / formula.ingredients.reduce((acc, ing) => acc + (ing as any).ml, 0)) * 100;
+    } else if (key === 'percent') {
+        const total = formula.ingredients.reduce((acc, ing) => acc + (ing as any).percent, 0);
+        material.drops = (material.percent! / 100) * total;
+        material.ml = material.drops / material.material.dropsPerMl;
+    }
     updatePercentages(material, key);
 }
 

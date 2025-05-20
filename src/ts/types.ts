@@ -32,11 +32,7 @@ export interface MessagesType {
 
 export type InputMode = 'drops' | 'ml' | 'percent';
 
-<<<<<<< HEAD
-export type NoteClassification = 'top' | 'heart' | 'base';
-=======
 export type NoteType = 'top' | 'heart' | 'base';
->>>>>>> 89d872c017027aacb6a047382da39011874fdfcb
 
 export type OlfactoryFamily =
 | 'citrus'
@@ -84,15 +80,17 @@ export const olfactoryFamilies : { value: OlfactoryFamily, label: string }[] = [
 ];
   
 
+export const noteClassLabels : Record<NoteType, string> = {
+    base: 'Base',
+    heart: 'Heart',
+    top: 'Top'
+};
+
 export interface Material {
-    id: string;
+    id: string | undefined;
     name: string;
     color: string;
-<<<<<<< HEAD
-    notes: NoteClassification[];
-=======
     notes: NoteType[];
->>>>>>> 89d872c017027aacb6a047382da39011874fdfcb
     dropsPerMl: number;
     family: OlfactoryFamily;
     createdAt: string;
@@ -114,13 +112,8 @@ export interface InventoryItem {
   
 
 export interface Ingredient {
-<<<<<<< HEAD
-    name: string;
-    note: NoteClassification;
-=======
     material: Material;
     note: NoteType;
->>>>>>> 89d872c017027aacb6a047382da39011874fdfcb
     inputValue: number;
     inputUnit: InputMode;
     drops?: number;
