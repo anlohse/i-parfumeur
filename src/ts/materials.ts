@@ -31,8 +31,13 @@ import { MultiSelect } from 'components/multiselect';
 
 let editing = false; 
 
+/**
+ * MaterialsView component displays a list of materials and allows the user to create, edit, and delete materials.
+ * It also provides a search functionality to filter materials based on various criteria.
+ */
 export const MaterialsView = () => html`
   <h2>🧪 - Materials</h2>
+  <div class="messages-container"></div>
   <div class="container">
     <div class="row">
       ${editing ? MaterialsEditView() : MaterialsSearchView()}
@@ -40,6 +45,10 @@ export const MaterialsView = () => html`
   </div>
 `;
 
+/**
+ * MaterialsEditView component displays a form to create or edit a material.
+ * It includes fields for identifier, name, note classification, olfactory family, color, and drops per ml.
+ */
 const MaterialsEditView = () => html`
     <div class="col">
         <div class="form-floating mb-3">
@@ -96,6 +105,10 @@ const MaterialsEditView = () => html`
     </div>
 `;
 
+/**
+ * MaterialsSearchView component displays a list of materials with filters for searching.
+ * It includes fields for filtering by name, note classification, and olfactory family.
+ */
 const MaterialsSearchView = () => html`
   <div class="accordion col" id="accordionExample">
         ${Collapse({
@@ -156,13 +169,17 @@ const MaterialsSearchView = () => html`
         </div>
       `; 
 
-                      
+       
 const materialDao = new MaterialDao();
 
 let materials: Material[] = [];
 let material: Material = createNewMaterial();
 let lastFilters: Record<string, string> = {};
 
+/**
+ * Initialize the materials list on component load
+ * This function fetches all materials from the database and sets the materials variable.
+ */
 function createNewMaterial(): Material {
     return {
         id: undefined,
@@ -175,39 +192,74 @@ function createNewMaterial(): Material {
     };
 }
 
+/**
+ * Load materials when the component is initialized
+ * This function fetches all materials from the database and sets the materials variable.
+ */
 function createNew() {
     editing = true;
     material = createNewMaterial();
     update();
 }
 
+// Cancel the editing mode and reset the material
+// This function is called when the user clicks the cancel button in the edit form.
+// It resets the editing state and the material variable to a new empty material.
+// It also updates the view to reflect the changes.
 function cancelEdit() {
     editing = false;
     update();
 }
 
-async function saveMaterial() {
-    editing = false;
-    material.updatedAt = new Date().toISOString();
-    await materialDao.save(material);
-    materials.push(material);
-    Messages.add('Material saved', 'success');
-    material = createNewMaterial();
-    update();
+async function validateSave() {
+    let mats = await materialDao.findByIndexes({"materialsByName": material.name});
+    if (mats.length > 0) {
+        Messages.add('There is already a material with this name', 'error');
+        return false;
+    }
+    return true;
 }
 
+// Save the material and reset the form
+// This function is called when the user clicks the save button in the edit form.
+// It updates the material's updatedAt timestamp, saves it to the database, and resets the material variable.
+// It also adds a success message to the Messages component and updates the view.
+// After saving, it resets the material variable to a new empty material.
+async function saveMaterial() {
+    editing = false;
+    if (await validateSave()) {
+        material.updatedAt = new Date().toISOString();
+        await materialDao.save(material);
+        materials.push(material);
+        Messages.add('Material saved', 'success');
+        material = createNewMaterial();
+        update();
+    }
+}
+
+// Handle changes in the material form fields
+// This function updates the material variable based on the input field changes.
+// It listens for changes in the input fields and updates the corresponding properties of the material object.
 function changeMaterial(e: Event) {
     const target = e.target as HTMLInputElement;
     (<any>material)[target.name] = target.value;
     console.log('changeMaterial', material);
 }
 
+// Handle changes in the notes selection
+// This function updates the material's notes based on the selected notes from the MultiSelect component.
+// It maps the selected notes to their IDs and updates the material variable accordingly.
+// It also logs the changes to the console for debugging purposes.
 function changeNotesEditing(notes: {id: string; name: string}[]) {
     console.log('changeNotesEditing', notes);
     material.notes = notes.map((note) => note.id as NoteType);
     console.log('material', material);
 }
 
+// Handle changes in the filters for searching materials
+// This function updates the lastFilters object with the values from the input fields and calls loadMaterials to fetch the filtered materials.
+// It listens for changes in the input fields and updates the filters accordingly.
+// It also removes any filters that are undefined or empty.
 function changeFilters(e: Event) {
     const target = e.target as HTMLInputElement;
     const filters = {
@@ -222,6 +274,11 @@ function changeFilters(e: Event) {
     loadMaterials(filters);
 }
 
+/**
+ * Load materials based on the provided filters.
+ * If no filters are provided, it loads all materials.
+ * It updates the materials list and the lastFilters variable.
+ */
 async function loadMaterials(filters: Record<string, string>) {
     console.log('loadMaterials', filters);
     materials = Object.keys(filters).length === 0 ? await materialDao.findAll() : await materialDao.findByIndexes(filters);
@@ -230,12 +287,16 @@ async function loadMaterials(filters: Record<string, string>) {
     update();
 }
 
+// Edit a material by setting it to the editing state and updating the material variable
+// This function is called when the user clicks the edit button on a material in the list.
 async function editMaterial(m: Material) {
     material = m;
     editing = true;
     update();
 }
 
+// Remove a material by deleting it from the database and reloading the materials list
+// This function is called when the user clicks the remove button on a material in the list.
 async function removeMaterial(m: Material) {
     console.log('removeMaterial', m);
     await materialDao.delete(m.id!);
