@@ -212,6 +212,18 @@ function cancelEdit() {
 }
 
 async function validateSave() {
+    if (!material.name) {
+        Messages.add('A name is required', 'error');
+        return false;
+    }
+    if (!material.family) {
+        Messages.add('A family is required', 'error');
+        return false;
+    }
+    if (!material.notes || !material.notes.length) {
+        Messages.add('A note is required', 'error');
+        return false;
+    }
     let mats = await materialDao.findByIndexes({"materialsByName": material.name});
     if (mats.length > 0) {
         Messages.add('There is already a material with this name', 'error');
