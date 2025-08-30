@@ -277,7 +277,7 @@ const FormulasEditView = () => html`
             })} 
 
             <div class="d-flex justify-content-center gap-4 ps-3 pe-3">
-                <button type="button" class="btn btn-outline-light btn-secondary col-6" @click="${cancelEdit}">Cancel</button>
+                <button type="button" class="btn btn-outline-light btn-secondary col-6" @click="${cancelEdit}">Search</button>
                 <button type="button" class="btn btn-outline-light btn-primary col-6" @click="${saveFormula}">Save</button>
             </div>
 
@@ -340,7 +340,7 @@ function createNewFormula(): Formula {
 }
 
 const newIngredient = (note: NoteType): Ingredient => ({
-    material: { id: '', name: '', color: '', notes: [], dropsPerMl: 0, family: 'floral', createdAt: '', updatedAt: '' },
+    material: undefined,
     note: note,
     inputValue: 0,
     inputUnit: 'drops',
@@ -349,12 +349,41 @@ const newIngredient = (note: NoteType): Ingredient => ({
     percent: 0
 });
 
+async function validateFormula(): Promise<boolean> {
+    let formulasPre = await formulaDao.findByIndexes({'formulasByName': formula.name});
+    if (formulasPre.filter(f => f.id !== formula.id).length !== 0) {
+        Messages.add('There is already a formula with the same name.', 'error');
+        return false;
+    }
+    if (formula.families.length === 0) {
+        Messages.add('A family must be selected.', 'error');
+        return false;
+    }
+    if (formula.ingredients.length === 0) {
+        Messages.add('Materials must be added.', 'error');
+        return false;
+    }
+    if (formula.ingredients.filter(ing => !ing.material).length !== 0) {
+        Messages.add('There are blank materials.', 'error');
+        return false;
+    }
+    if (formula.ingredients.filter(ing => ing.drops === 0).length !== 0) {
+        Messages.add('There are materials with zero quantity.', 'error');
+        return false;
+    }
+    return true;
+}
+
 async function saveFormula() {
-    formula.updatedAt = new Date().toISOString();
-    await formulaDao.save(formula);
-    formulas.push(formula);
-    Messages.add('Formula saved', 'success');
-    formula = createNewFormula();
+    formula.ingredients = groupIngredients.top.concat(groupIngredients.heart).concat(groupIngredients.base);
+    if (await validateFormula()) {
+        formula.updatedAt = new Date().toISOString();
+        await formulaDao.save(formula);
+        formulas.push(formula);
+        Messages.add('Formula saved', 'success');
+        formula = createNewFormula();
+        cancelEdit();
+    }
 }
 
 async function deleteFormula(formula: Formula) {
@@ -445,17 +474,16 @@ function updateIngredient(material: Ingredient, key: keyof Ingredient, e: Event)
     const target = e.target as HTMLInputElement;
     let val = parseFloat(target.value);
     (material as any)[key] = Number.isNaN(val) ? 0 : val;
-    // TODO update other material keys
     if (key === 'drops') {
-        material.ml = material.drops! / material.material.dropsPerMl;
+        material.ml = material.drops! / (material.material?.dropsPerMl || 20);
         material.percent = (material.drops! / formula.ingredients.reduce((acc, ing) => acc + (ing as any).drops, 0)) * 100;
     } else if (key === 'ml') {
-        material.drops = material.ml! * material.material.dropsPerMl;
+        material.drops = material.ml! * (material.material?.dropsPerMl || 20);
         material.percent = (material.ml! / formula.ingredients.reduce((acc, ing) => acc + (ing as any).ml, 0)) * 100;
     } else if (key === 'percent') {
         const total = formula.ingredients.reduce((acc, ing) => acc + (ing as any).percent, 0);
         material.drops = (material.percent! / 100) * total;
-        material.ml = material.drops / material.material.dropsPerMl;
+        material.ml = material.drops / (material.material?.dropsPerMl || 20);
     }
     updatePercentages(material, key);
 }

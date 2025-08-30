@@ -62,13 +62,15 @@ export function AutoSelect(autoselectOptions: AutoSelectOptions) {
     function selectItem(e: Event, callEventHandler = true) {
         console.log('selectItem', e.target);
         const item = (e.target as any).data;
-        if (autoselectOptions.onSelect && callEventHandler) {
-            autoselectOptions.onSelect(item);
+        if (item) {
+            if (autoselectOptions.onSelect && callEventHandler) {
+                autoselectOptions.onSelect(item);
+            }
+            state.search = item.name;
+            (document.getElementById(autoselectOptions.id) as HTMLInputElement).value = item.name;
+            (document.getElementById(autoselectOptions.id) as HTMLInputElement).toggleAttribute('readonly', true);
+            (document.getElementById(autoselectOptions.id + '-clear') as HTMLButtonElement).style.display = 'block';
         }
-        state.search = item.name;
-        (document.getElementById(autoselectOptions.id) as HTMLInputElement).value = item.name;
-        (document.getElementById(autoselectOptions.id) as HTMLInputElement).toggleAttribute('readonly', true);
-        (document.getElementById(autoselectOptions.id + '-clear') as HTMLButtonElement).style.display = 'block';
     }
 
     function clearSelection() {

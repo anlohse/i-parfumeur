@@ -112,7 +112,7 @@ export interface InventoryItem {
   
 
 export interface Ingredient {
-    material: Material;
+    material?: Material;
     note: NoteType;
     inputValue: number;
     inputUnit: InputMode;
